@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/newjwttest
+    username: root
+    password: admin123
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+application:
+  jwt:
+    key: brXzPetE8ivZhetRar0MW47UcUJg8GL5hdmnSvFk2nYQdxSWkLZHLWUftkzKaPyA
