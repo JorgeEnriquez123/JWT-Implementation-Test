@@ -47,10 +47,10 @@ public class JwtService {
                     .getBody();
         }
         catch (ExpiredJwtException e) {
-            throw new TokenExpiredException(format("JWT: %s has expired", token));
+            throw new TokenExpiredException(format("The JWT token: %s has expired", token));
         }
         catch (SignatureException | UnsupportedJwtException | MalformedJwtException e){
-            throw new TokenInvalidException(format("JWT: %s validation has failed", token));
+            throw new TokenInvalidException(format("The JWT token: %s validation has failed", token));
         }
     }
 
