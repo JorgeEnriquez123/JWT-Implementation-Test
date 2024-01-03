@@ -1,4 +1,4 @@
-package com.jorge.jwtnewtest.config.security;
+package com.jorge.jwtnewtest.configuration.security;
 
 import com.jorge.jwtnewtest.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

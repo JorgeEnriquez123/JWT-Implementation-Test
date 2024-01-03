@@ -1,6 +1,6 @@
-package com.jorge.jwtnewtest.config.security;
+package com.jorge.jwtnewtest.configuration.security;
 
-import com.jorge.jwtnewtest.config.security.jwt.JwtService;
+import com.jorge.jwtnewtest.configuration.security.jwt.JwtService;
 import com.jorge.jwtnewtest.dto.LoginRequest;
 import com.jorge.jwtnewtest.dto.LoginResponse;
 import com.jorge.jwtnewtest.model.User;

@@ -1,4 +1,4 @@
-package com.jorge.jwtnewtest.config.security.jwt;
+package com.jorge.jwtnewtest.configuration.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

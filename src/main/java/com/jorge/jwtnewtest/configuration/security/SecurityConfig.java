@@ -1,8 +1,7 @@
-package com.jorge.jwtnewtest.config.security;
+package com.jorge.jwtnewtest.configuration.security;
 
-import com.jorge.jwtnewtest.config.security.jwt.JwtAuthenticationFilter;
+import com.jorge.jwtnewtest.configuration.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

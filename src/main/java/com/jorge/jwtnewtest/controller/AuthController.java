@@ -1,6 +1,6 @@
 package com.jorge.jwtnewtest.controller;
 
-import com.jorge.jwtnewtest.config.security.AuthService;
+import com.jorge.jwtnewtest.configuration.security.AuthService;
 import com.jorge.jwtnewtest.dto.LoginRequest;
 import com.jorge.jwtnewtest.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
