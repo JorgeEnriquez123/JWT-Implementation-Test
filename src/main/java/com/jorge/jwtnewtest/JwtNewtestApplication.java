@@ -2,9 +2,8 @@ package com.jorge.jwtnewtest;
 
 import com.jorge.jwtnewtest.model.Role;
 import com.jorge.jwtnewtest.model.User;
+import com.jorge.jwtnewtest.repository.RoleRepository;
 import com.jorge.jwtnewtest.repository.UserRepository;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +17,9 @@ import java.util.Set;
 @Slf4j
 public class JwtNewtestApplication implements CommandLineRunner {
 	@Autowired
-	UserRepository repository;
+	UserRepository userRepository;
+	@Autowired
+	RoleRepository roleRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
@@ -39,8 +40,22 @@ public class JwtNewtestApplication implements CommandLineRunner {
 				.build();
 
 		jorgeUser.getRoles().add(jorgeRole);
-		repository.save(jorgeUser);
-
+		userRepository.save(jorgeUser);
 		log.info("User Saved");
+
+		log.info("Trying to Save Admin User...");
+		var adminUser = new User();
+		adminUser.setUsername("Admin");
+		adminUser.setPassword(passwordEncoder.encode("admin123"));
+
+		var adminRole = Role.builder()
+				.name("ADMIN")
+				.users(Set.of(adminUser))
+				.build();
+		adminUser.getRoles().add(adminRole);
+
+		userRepository.save(adminUser);
+
+		log.info("Admin User Saved Successfully");
 	}
 }
