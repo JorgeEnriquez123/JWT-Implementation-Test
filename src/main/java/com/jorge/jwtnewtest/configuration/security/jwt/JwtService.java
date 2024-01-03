@@ -1,10 +1,11 @@
 package com.jorge.jwtnewtest.configuration.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.jorge.jwtnewtest.exception.TokenExpiredException;
+import com.jorge.jwtnewtest.exception.TokenInvalidException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static java.lang.String.format;
 
 @Component
 public class JwtService {
@@ -36,11 +39,19 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token){
-        return Jwts.parserBuilder()
+        try {
+            return Jwts.parserBuilder()
                     .setSigningKey(getKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+        }
+        catch (ExpiredJwtException e) {
+            throw new TokenExpiredException(format("JWT: %s has expired", token));
+        }
+        catch (SignatureException | UnsupportedJwtException | MalformedJwtException e){
+            throw new TokenInvalidException(format("JWT: %s validation has failed", token));
+        }
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
