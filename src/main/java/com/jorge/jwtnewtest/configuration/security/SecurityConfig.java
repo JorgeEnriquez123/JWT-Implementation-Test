@@ -32,6 +32,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
@@ -41,22 +43,20 @@ public class SecurityConfig {
                 // Authenticated endpoints
                         .anyRequest()
                         .authenticated())
-                .exceptionHandling(exception -> exception
+                .exceptionHandling(ex -> ex
+                // Authentication Error Handling    |   No Logged User
                         .authenticationEntryPoint(customEntryPoint())
+                // Authorization Error Handling     |   Logged User has not the right permission
                         .accessDeniedHandler(customAccessDenied()))
-                //      (req, res, e) ->
-                //      res.setStatus(HttpStatus.UNAUTHORIZED.value())      // Simple EntryPoint implementation
-                        .authenticationProvider(authProvider)
+                .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-    // Authentication Error Handling
     public AuthenticationEntryPoint customEntryPoint() {
         return new CustomAuthenticationEntryPoint();
     }
 
-    // Authorization Error Handling
     public AccessDeniedHandler customAccessDenied() {
         return new CustomAccessDenied();
     }

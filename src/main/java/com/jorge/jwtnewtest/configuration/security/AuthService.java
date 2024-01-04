@@ -1,8 +1,8 @@
 package com.jorge.jwtnewtest.configuration.security;
 
 import com.jorge.jwtnewtest.configuration.security.jwt.JwtService;
-import com.jorge.jwtnewtest.dto.LoginRequest;
-import com.jorge.jwtnewtest.dto.LoginResponse;
+import com.jorge.jwtnewtest.dto.LoginRequestDto;
+import com.jorge.jwtnewtest.dto.LoginResponseDto;
 import com.jorge.jwtnewtest.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,13 +16,13 @@ public class AuthService {
     JwtService jwtService;
     @Autowired
     AuthenticationManager auth;
-    public LoginResponse login(LoginRequest loginRequest){
+    public LoginResponseDto login(LoginRequestDto loginRequestDto){
         UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+                new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
         Authentication authResult = auth.authenticate(authToken);
         var authenticatedUser = (User)authResult.getPrincipal();
 
-        return LoginResponse.builder()
+        return LoginResponseDto.builder()
                 .access_token(jwtService.generateToken(authenticatedUser))
                 .build();
     }

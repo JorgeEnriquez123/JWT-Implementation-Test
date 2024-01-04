@@ -1,8 +1,8 @@
 package com.jorge.jwtnewtest.controller;
 
 import com.jorge.jwtnewtest.configuration.security.AuthService;
-import com.jorge.jwtnewtest.dto.LoginRequest;
-import com.jorge.jwtnewtest.dto.LoginResponse;
+import com.jorge.jwtnewtest.dto.LoginRequestDto;
+import com.jorge.jwtnewtest.dto.LoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest){
-        return authService.login(loginRequest);
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto){
+        return authService.login(loginRequestDto);
     }
 }

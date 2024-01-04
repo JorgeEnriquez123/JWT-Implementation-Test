@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class LoginResponse {
-    String access_token;
+public class LoginResponseDto {
+    private String access_token;
 }
