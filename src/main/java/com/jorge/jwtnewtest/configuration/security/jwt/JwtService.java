@@ -45,12 +45,14 @@ public class JwtService {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        }
-        catch (ExpiredJwtException e) {
-            throw new TokenExpiredException(format("The JWT token: %s has expired", token));
-        }
-        catch (SignatureException | UnsupportedJwtException | MalformedJwtException e){
-            throw new TokenInvalidException(format("The JWT token: %s validation has failed", token));
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("The JWT token has expired");
+        } catch (MalformedJwtException e) {
+            throw new TokenInvalidException("The JWT token is Malformed. Its structure appears to be invalid");
+        } catch (SignatureException e) {
+            throw new TokenInvalidException("The JWT token Signature is invalid. Token might have been tampered");
+        } catch (UnsupportedJwtException | IllegalArgumentException e) {
+            throw new TokenInvalidException(e.getMessage());
         }
     }
 
