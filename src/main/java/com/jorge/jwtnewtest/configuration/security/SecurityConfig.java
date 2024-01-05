@@ -1,13 +1,11 @@
 package com.jorge.jwtnewtest.configuration.security;
 
+import com.jorge.jwtnewtest.configuration.security.authhandler.CustomAccessDenied;
+import com.jorge.jwtnewtest.configuration.security.authhandler.CustomAuthenticationEntryPoint;
 import com.jorge.jwtnewtest.configuration.security.filter.JwtAuthenticationFilter;
-import jakarta.json.Json;
-import jakarta.json.JsonObjectBuilder;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,9 +15,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity

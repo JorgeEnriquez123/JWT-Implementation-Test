@@ -1,4 +1,4 @@
-package com.jorge.jwtnewtest.exception;
+package com.jorge.jwtnewtest.exception.security;
 
 public class TokenInvalidException extends RuntimeException{
     public TokenInvalidException() {

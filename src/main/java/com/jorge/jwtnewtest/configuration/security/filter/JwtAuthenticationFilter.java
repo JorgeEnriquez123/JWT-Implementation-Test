@@ -1,15 +1,19 @@
 package com.jorge.jwtnewtest.configuration.security.filter;
 
+import com.jorge.jwtnewtest.configuration.security.SecurityManager;
 import com.jorge.jwtnewtest.configuration.security.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,45 +23,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 import static java.lang.String.format;
-
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    @Autowired
-    JwtService jwtService;
-    @Autowired
-    UserDetailsService userDetailsService;
-
+    @Lazy
+    private final SecurityManager securityManager;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var jwtToken = getTokenFromRequest(request);
-
         if (jwtToken != null) {
-            // securityManager.authenticate(jwtToken).ifPresent(SecurityContext.getContext()::setAuthentication())
-            var username = jwtService.extractUsername(jwtToken);
-
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                var userAuthenticated = userDetailsService.loadUserByUsername(username);
-
-                if (jwtService.isTokenValid(jwtToken, userAuthenticated)) {
-                    log.info("Token is Valid");
-                    log.info(format(
-                                    "Setting SecurityContext with User: %s",
-                                    userAuthenticated.getUsername())
-                    );
-                    setSecurityContext(userAuthenticated);
-                }
+            securityManager.authenticate(jwtToken)
+                    .ifPresent(SecurityContextHolder.getContext()::setAuthentication);
             }
-        }
         filterChain.doFilter(request, response);
-    }
-
-    private void setSecurityContext(UserDetails userAuthenticated) {
-        Authentication authtoken = new UsernamePasswordAuthenticationToken(
-                userAuthenticated.getUsername(),
-                null,
-                userAuthenticated.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authtoken);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {

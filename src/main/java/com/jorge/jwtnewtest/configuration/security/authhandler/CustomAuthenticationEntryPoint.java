@@ -1,6 +1,5 @@
-package com.jorge.jwtnewtest.configuration.security;
+package com.jorge.jwtnewtest.configuration.security.authhandler;
 
-import com.jorge.jwtnewtest.model.User;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.servlet.RequestDispatcher;
@@ -9,43 +8,41 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 
 import static java.lang.String.format;
 
 @Slf4j
-public class CustomAccessDenied implements AccessDeniedHandler {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         String requestURI = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
         if (requestURI == null) {
             requestURI = request.getRequestURI();
         }
-        log.info("Error processing request: HTTP Method = {}, URL = {}, Error = {}",
+        log.info("Error processing request: HTTP Method = {}, URI = {}, Error = {}",
                 request.getMethod(),
                 requestURI,
-                accessDeniedException.getMessage()
+                authException.getMessage()
         );
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        auth.getAuthorities().forEach(System.out::println);
 
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
-        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
         jsonBuilder.add("timestamp", LocalDateTime.now().format(formatter));
-        jsonBuilder.add("status", 403);
-        jsonBuilder.add("message", "Access Denied");
+        jsonBuilder.add("status", 401);
+        jsonBuilder.add("message", "Unauthorized");
 
         String json = jsonBuilder.build().toString();
         response.getWriter().write(json);

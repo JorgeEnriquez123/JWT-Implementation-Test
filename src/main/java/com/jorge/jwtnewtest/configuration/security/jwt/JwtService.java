@@ -1,7 +1,9 @@
 package com.jorge.jwtnewtest.configuration.security.jwt;
 
-import com.jorge.jwtnewtest.exception.TokenExpiredException;
-import com.jorge.jwtnewtest.exception.TokenInvalidException;
+import com.jorge.jwtnewtest.exception.security.TokenExpiredException;
+import com.jorge.jwtnewtest.exception.security.TokenInvalidException;
+import com.jorge.jwtnewtest.exception.security.TokenMalformedException;
+import com.jorge.jwtnewtest.exception.security.TokenSignatureException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -9,7 +11,6 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import java.security.Key;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))    // 1 Minute
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -48,9 +49,9 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
             throw new TokenExpiredException("The JWT token has expired");
         } catch (MalformedJwtException e) {
-            throw new TokenInvalidException("The JWT token is Malformed. Its structure appears to be invalid");
+            throw new TokenMalformedException("The JWT token is Malformed. Its structure appears to be invalid");
         } catch (SignatureException e) {
-            throw new TokenInvalidException("The JWT token Signature is invalid. Token might have been tampered");
+            throw new TokenSignatureException("The JWT token Signature is invalid. Token might have been tampered");
         } catch (UnsupportedJwtException | IllegalArgumentException e) {
             throw new TokenInvalidException(e.getMessage());
         }

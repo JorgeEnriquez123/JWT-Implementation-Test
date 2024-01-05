@@ -1,4 +1,4 @@
-package com.jorge.jwtnewtest.exception;
+package com.jorge.jwtnewtest.exception.security;
 
 public class TokenExpiredException extends RuntimeException{
     public TokenExpiredException() {
