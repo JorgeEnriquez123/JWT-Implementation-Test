@@ -2,6 +2,7 @@ package com.jorge.jwtnewtest.configuration.security;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,13 +25,21 @@ import static java.lang.String.format;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.info("No User Logged");
+        String requestURI = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
+        if (requestURI == null) {
+            requestURI = request.getRequestURI();
+        }
+        log.info("Error processing request: HTTP Method = {}, URI = {}, Error = {}",
+                request.getMethod(),
+                requestURI,
+                authException.getMessage()
+        );
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
-        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
         jsonBuilder.add("timestamp", LocalDateTime.now().format(formatter));
         jsonBuilder.add("status", 401);
         jsonBuilder.add("message", "Unauthorized");

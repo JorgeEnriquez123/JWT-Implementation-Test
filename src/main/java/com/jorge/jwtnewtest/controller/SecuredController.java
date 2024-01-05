@@ -13,7 +13,7 @@ public class SecuredController {
         return "Secured Message 1";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/admin")
     public String securedAdmin(){
         return "Message - ADMIN ONLY";
