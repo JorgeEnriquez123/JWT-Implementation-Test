@@ -41,8 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (jwtService.isTokenValid(jwtToken, userAuthenticated)) {
                     log.info("Token is Valid");
-                    log.info(
-                            format(
+                    log.info(format(
                                     "Setting SecurityContext with User: %s",
                                     userAuthenticated.getUsername())
                     );
