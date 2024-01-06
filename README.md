@@ -30,14 +30,14 @@ Caching Data can help to improve performance in this approach, but it's not bein
 * **POST** `/auth/login`: Authenticates a user and returns a JWT token.
 
 ### Login Process
-1. User makes a POST request to `/authenticate` with a [LoginRequestDto](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/src/main/java/com/jorge/jwtnewtest/dto/LoginRequestDto.java) Object as body.
+1. User makes a POST request to `/auth/login` with a [LoginRequestDto](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/src/main/java/com/jorge/jwtnewtest/dto/LoginRequestDto.java) Object as body.
 ```json
 {
     "username": "Jorge",
     "password": "jorge123"
 }
 ```
-2. Server returns a [LoginResponseDto](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/src/main/java/com/jorge/jwtnewtest/dto/LoginResponseDto.java) that contains the Access Token.
+2. Server returns a [LoginResponseDto](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/src/main/java/com/jorge/jwtnewtest/dto/LoginResponseDto.java) Object that contains the Access Token.
 ```json
 {
 "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb3JnZSIsImlhdCI6MTcwNDUyNzU4OCwiZXhwIjoxNzA0NTI3NjQ4fQ.ylqZkFGIyymfyyB9wzOEexsAM-w8TKDowvX5keNIyB4",
