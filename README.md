@@ -40,7 +40,7 @@ Caching Data can help to improve performance in this approach, but it's not bein
 2. Server returns a [LoginResponseDto](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/src/main/java/com/jorge/jwtnewtest/dto/LoginResponseDto.java) Object that contains the Access Token.
 ```json
 {
-"access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb3JnZSIsImlhdCI6MTcwNDUyNzU4OCwiZXhwIjoxNzA0NTI3NjQ4fQ.ylqZkFGIyymfyyB9wzOEexsAM-w8TKDowvX5keNIyB4",
+"access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb3JnZSIsImlhdCI6MTcwNDUyNzU4OCwiZXhwIjoxNzA0NTI3NjQ4fQ.ylqZkFGIyymfyyB9wzOEexsAM-w8TKDowvX5keNIyB4"
 }
 ```
 User needs to add the Access Token in all secured endpoints to gain authorization.
