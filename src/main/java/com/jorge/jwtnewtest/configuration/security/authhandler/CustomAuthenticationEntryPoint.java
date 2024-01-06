@@ -42,7 +42,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
         jsonBuilder.add("timestamp", LocalDateTime.now().format(formatter));
         jsonBuilder.add("status", 401);
-        jsonBuilder.add("message", "Unauthorized");
+        jsonBuilder.add("message", authException.getMessage());
 
         String json = jsonBuilder.build().toString();
         response.getWriter().write(json);

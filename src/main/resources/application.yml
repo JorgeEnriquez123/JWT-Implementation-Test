@@ -7,7 +7,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -16,3 +16,9 @@ spring:
 application:
   jwt:
     key: brXzPetE8ivZhetRar0MW47UcUJg8GL5hdmnSvFk2nYQdxSWkLZHLWUftkzKaPyA
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
