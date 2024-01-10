@@ -44,3 +44,5 @@ Caching Data can help to improve performance in this approach, but it's not bein
 }
 ```
 User needs to add the Access Token in all secured endpoints to gain authorization.
+
+### **[[ Postman Collection ]](https://github.com/JorgeEnriquez123/JWT-Implementation-Test/blob/main/JWT%20Test%20implementation.postman_collection.json)**
