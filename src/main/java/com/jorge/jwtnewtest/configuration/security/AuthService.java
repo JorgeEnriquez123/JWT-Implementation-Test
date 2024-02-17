@@ -4,6 +4,7 @@ import com.jorge.jwtnewtest.configuration.security.jwt.JwtService;
 import com.jorge.jwtnewtest.dto.ErrorResponse;
 import com.jorge.jwtnewtest.dto.LoginRequestDto;
 import com.jorge.jwtnewtest.dto.LoginResponseDto;
+import com.jorge.jwtnewtest.exception.security.LoginException;
 import com.jorge.jwtnewtest.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,11 +35,7 @@ public class AuthService {
                     .build();
         }
         catch (AuthenticationException ex){
-            return ErrorResponse.builder()
-                    .timestamp(LocalDateTime.now())
-                    .status(401)
-                    .message(ex.getMessage())
-                    .build();
+            throw new LoginException("Login Failed, check credentials.");
         }
     }
 }
