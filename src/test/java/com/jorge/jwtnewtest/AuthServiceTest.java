@@ -7,6 +7,7 @@ import com.jorge.jwtnewtest.dto.LoginRequestDto;
 import com.jorge.jwtnewtest.dto.LoginResponseDto;
 import com.jorge.jwtnewtest.exception.security.LoginException;
 import com.jorge.jwtnewtest.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,15 +31,20 @@ public class AuthServiceTest {
     @InjectMocks
     AuthService authService;
 
-    @Test
-    public void authService_LoginSuccessful(){
-        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
+    private LoginRequestDto loginRequestDto;
+    private UsernamePasswordAuthenticationToken authToken;
+
+    @BeforeEach
+    public void init(){
+        loginRequestDto = LoginRequestDto.builder()
                 .username("testUser")
                 .password("testPassword")
                 .build();
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+        authToken = new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+    }
 
+    @Test
+    public void authService_LoginSuccessful(){
         User user = User.builder()
                 .username("testUser")
                 .password("testPassword")
@@ -55,14 +61,7 @@ public class AuthServiceTest {
 
     @Test
     public void authService_LoginFailed(){
-        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
-                .username("testUser")
-                .password("testPassword")
-                .build();
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword());
-
-        when(auth.authenticate(authToken)).thenThrow(new BadCredentialsException("Login Failed, check credentials."));
+        when(auth.authenticate(authToken)).thenThrow(new BadCredentialsException("Bad credentials"));
 
         assertThrows(LoginException.class, () -> {
             authService.login(loginRequestDto);
